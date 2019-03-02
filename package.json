@@ -1,0 +1,25 @@
+{
+  "name": "project2_ecorpse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matking4509/Project2_eCorpse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matking4509/Project2_eCorpse/issues"
+  },
+  "homepage": "https://github.com/matking4509/Project2_eCorpse#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "serialize": "^0.1.3"
+  }
+}
