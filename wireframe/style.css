@@ -1,7 +1,6 @@
-.bg {
+body {
     /* The image used */
     background-image: url("./img/OldDesignShop_DictionaryPageKiss.jpg");
-  
     /* Full height */
     height: 100%;
   
@@ -12,9 +11,10 @@
     background-attachment: fixed;
   }
 
-  /* body, html {
-    height: 100%;
-  } */
+  .nodots {
+      list-style-type: none;
+      padding-left: 0;
+  }
 
   .card {
       opacity: 1;
