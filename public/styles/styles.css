@@ -1,3 +1,24 @@
 .list-group-item {
   line-height: 2.5;
 }
+body {
+  /* The image used */
+  background-image: url("./img/OldDesignShop_DictionaryPageKiss.jpg");
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.nodots {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.card {
+    opacity: 1;
+}
