@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    var Element = sequelize.define("Element", {
+    var element = sequelize.define("element", {
         body: {
             type: DataTypes.TEXT,
             allowNull: false,
@@ -12,23 +12,21 @@ module.exports = function(sequelize, DataTypes) {
         // Updated_at | Sequelize will populate this
     });
 
-    // Associate Element with Stories. Adds story_id to Permission table
-    Element.associate = function(models) {
-        Element.belongsTo(models.User, {
+    element.associate = function(models) {
+        // Associate Element with Stories. Adds story_id to Permission table
+        element.belongsTo(models.user, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+
+        // Associate Permission with Stories. Adds story_id to Permission table
+        element.belongsTo(models.stories, {
             foreignKey: {
                 allowNull: false
             }
         })
     };
-
-    // Associate Permission with Stories. Adds story_id to Permission table
-    Element.associate = function(models) {
-        Element.belongsTo(models.Stories, {
-            foreignKey: {
-                allowNull: false
-            }
-        })
-    };
-
-    return Element;
+    
+    return element;
 }

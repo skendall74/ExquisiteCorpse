@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    var Stories = sequelize.define("Stories", {
+    var stories = sequelize.define("stories", {
         story_name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -9,5 +9,5 @@ module.exports = function(sequelize, DataTypes) {
         }
     })
 
-    return Stories;
+    return stories;
 }
