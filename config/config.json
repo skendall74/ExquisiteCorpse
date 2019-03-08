@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "exampledb",
+    "password": "84c$95Zm",
+    "database": "ecorpse_p2",
     "host": "localhost",
     "dialect": "mysql"
   },
