@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "84c$95Zm",
+    "password": "",
     "database": "ecorpse_p2",
     "host": "localhost",
     "dialect": "mysql"
