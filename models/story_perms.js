@@ -1,28 +1,26 @@
-module.exports = function(sequelize, DataTypes) {
-    var Permission = sequelize.define("Permission", {
+module.exports = function (sequelize, DataTypes) {
+    var story_perms = sequelize.define("story_perms", {
         // id | Sequelize will populate this
         // Created_at | Sequelize will populate this
         // Updated_at | Sequelize will populate this
 
     });
 
-    // Associate Permission with Stories. Adds story_id to Permission table
-    Permission.associate = function(models) {
-        Permission.belongsTo(models.Stories, {
+    story_perms.associate = function (models) {
+        // Associate story_perms with Stories. Adds story_id to story_perms table
+        story_perms.belongsTo(models.stories, {
             foreignKey: {
                 allowNull: false
             }
-        })
-    };
+        });
 
-    // Associate Permission with Users. Adds user_id to Permission table
-    Permission.associate= function(models) {
-        Permission.belongsTo(models.User, {
+        // Associate story_perms with Users. Adds user_id to story_perms table
+        story_perms.belongsTo(models.user, {
             foreignKey: {
                 allowNull: false
             }
-        })
+        });
     };
 
-    return Permission;
+    return story_perms;
 }
