@@ -1,5 +1,5 @@
-CREATE DATABASE ecorpse_p2;
-USE ecorpse_p2;
+CREATE DATABASE ecorpse_db;
+USE ecorpse_db;
 
 CREATE TABLE `elements` (
   `id` Int( 11 ) AUTO_INCREMENT NOT NULL,
