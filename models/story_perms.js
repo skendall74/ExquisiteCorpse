@@ -10,6 +10,7 @@ module.exports = function (sequelize, DataTypes) {
         // Associate story_perms with Stories. Adds story_id to story_perms table
         story_perms.belongsTo(models.stories, {
             foreignKey: {
+                name: "story_id",
                 allowNull: false
             }
         });
@@ -17,6 +18,7 @@ module.exports = function (sequelize, DataTypes) {
         // Associate story_perms with Users. Adds user_id to story_perms table
         story_perms.belongsTo(models.user, {
             foreignKey: {
+                name: "user_id",
                 allowNull: false
             }
         });

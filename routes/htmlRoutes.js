@@ -1,24 +1,56 @@
 var db = require("../models");
 
-module.exports = function(app) {
-
-  // Callback function to return all data in specified table
-  const getData = (tableName) => {
-    return new Promise((resolve, reject) => {
-      db[tableName].findAll({}).then((result) => {
-        resolve(result);
-      })
+// Callback function to return all data in specified table
+const getAll = (tableName) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findAll({}).then((result) => {
+      resolve(result);
     })
-  };
+  })
+};
 
+// Callback function to return one data to specified table
+const getElementStory = (tableName, id) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findAll({
+      where: {
+        story_id: id
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+};
+
+const getOneStory = (tableName) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findOne({
+      where: {
+        id: 1
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+}
+
+module.exports = function (app) {
   // Load index page
-  app.get("/", function(req, res) {
+  app.get("/:id?", function (req, res) {
     let returnData = {};
+    let id;
+
+    if (req.params.id) {
+      id = req.params.id;
+    } else {
+      id = 1;
+    }
 
     // Single promise that resolves once all of the promises passed as an iterable have resolved
     Promise.all([
-      getData("stories"),
-      getData("element")
+      getOneStory("stories"),
+      getAll("stories"),
+      getElementStory("element", id)
     ]).then((data) => {
       // Stringifies data
       let jsonString = JSON.stringify(data);
@@ -28,8 +60,9 @@ module.exports = function(app) {
 
       // Stores returned data into object to be passed to front-end
       returnData = {
-        elements: dataArray[0],
-        users: dataArray[1]
+        oneStory: dataArray[0],
+        allStories: dataArray[1],
+        elements: dataArray[2],
       }
 
       console.log(returnData);
@@ -38,8 +71,8 @@ module.exports = function(app) {
   });
 
   // Load example page and pass in an example by id
-  app.get("/example/:id", function(req, res) {
-    db.Example.findOne({ where: { id: req.params.id } }).then(function(dbExample) {
+  app.get("/example/:id", function (req, res) {
+    db.Example.findOne({ where: { id: req.params.id } }).then(function (dbExample) {
       res.render("example", {
         example: dbExample
       });
@@ -47,7 +80,7 @@ module.exports = function(app) {
   });
 
   // Render 404 page for any unmatched routes
-  app.get("*", function(req, res) {
+  app.get("*", function (req, res) {
     res.render("404");
   });
 };
