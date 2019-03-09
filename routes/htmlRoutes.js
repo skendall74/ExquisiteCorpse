@@ -22,11 +22,11 @@ const getElementStory = (tableName, id) => {
   })
 };
 
-const getOneStory = (tableName) => {
+const getOneStory = (tableName, id) => {
   return new Promise((resolve, reject) => {
     db[tableName].findOne({
       where: {
-        id: 1
+        id: id
       }
     }).then((result) => {
       resolve(result);
@@ -48,7 +48,7 @@ module.exports = function (app) {
 
     // Single promise that resolves once all of the promises passed as an iterable have resolved
     Promise.all([
-      getOneStory("stories"),
+      getOneStory("stories", id),
       getAll("stories"),
       getElementStory("element", id)
     ]).then((data) => {
