@@ -28,8 +28,8 @@ module.exports = function(app) {
 
       // Stores returned data into object to be passed to front-end
       returnData = {
-        elements: dataArray[0],
-        users: dataArray[1]
+        stories: dataArray[0],
+        elements: dataArray[1]
       }
 
       console.log(returnData);
