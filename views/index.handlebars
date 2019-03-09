@@ -8,7 +8,7 @@
                                 <div class="card-header h3 font-weight-bold">Stories</div>
                                 <div class="card-body ">
                                     <ul class="nodots">
-                                      {{#each stories}}
+                                      {{#each allStories}}
                                         {{>stories}}
                                       {{/each}}
                                         {{!-- <li><a href="#">Story One</a></li>
@@ -27,9 +27,7 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-header h3 text-center font-weight-bold">
-                                    {{#each stories}}
-                                    {{#if id}}SLEEP{{/if}}
-                                        {{/each}}
+                                    {{oneStory.story_name}}
                                 <div class="card-body h4" id="last-paragraph">
                                     {{#each elements}}
                                       {{>elements}}
