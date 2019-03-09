@@ -13,9 +13,10 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     element.associate = function(models) {
-        // Associate Element with Stories. Adds story_id to Permission table
+        // Associate Element with Stories. Adds user_id to Permission table
         element.belongsTo(models.user, {
             foreignKey: {
+                name: "user_id",
                 allowNull: false
             }
         });
@@ -23,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         // Associate Permission with Stories. Adds story_id to Permission table
         element.belongsTo(models.stories, {
             foreignKey: {
+                name: "story_id",
                 allowNull: false
             }
         })
