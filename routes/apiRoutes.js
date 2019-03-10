@@ -1,35 +1,75 @@
 var db = require("../models");
 
+// Callback function to return all data from specified database table
+const getAll = (tableName) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findAll({}).then((result) => {
+      resolve(result);
+    })
+  })
+};
+
+// Callback function to return one data from specified database table
+const getElementStory = (tableName, id) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findAll({
+      where: {
+        story_id: id
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+};
+
+// Callback function to return one story from specified database table
+const getOneStory = (tableName, id) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findOne({
+      where: {
+        id: id
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+};
+
 module.exports = function (app) {
   // CURRENT USER Posts a Paragraph Once Varified
-  app.get("/api/editor", function (req, res) {
-    var query = {};
-    if (req.query.user_id) {
-      query.UserId = req.query.user_id;
+  app.get("/api/ecorpse", (req, res) => {
+    let returnData = {};
+    let id;
+    console.log(req.body.id);
+
+    if (req.body.id) {
+      id = req.body.id;
+    } else {
+      id = 1;
     }
-    db.element
-      .findAll({
-        where: query,
-        include: [db.user_id]
-      })
-      .then(function (dbelement) {
-        res.json(dbelement);
-      });
 
-  });
+    // Single promise that resolves once all of the promises passed as an iterable have resolved
+    Promise.all([
+      getOneStory("stories", id),
+      getAll("stories"),
+      getElementStory("element", id)
+    ]).then((data) => {
+      // Stringifies data
+      let jsonString = JSON.stringify(data);
 
-  // a Paragraph Once Varified
-  app.get("/api/editor", function (req, res) {
-    db.element
-      .findOne({
-        where: {
-          id: req.params.id
-        },
-        include: [db.user_id]
-      })
-      .then(function (dbelement) {
-        res.json(dbelement);
-      });
+      // Converts data string into object and then places into an array
+      let dataArray = JSON.parse(jsonString);
+
+      // Stores returned data into object to be passed to front-end
+      returnData = {
+        oneStory: dataArray[0],
+        allStories: dataArray[1],
+        elements: dataArray[2],
+      }
+
+      console.log(returnData);
+      res.json(returnData);
+    });
   });
 
   // DELETE route for deleting posts inbody of editor 
