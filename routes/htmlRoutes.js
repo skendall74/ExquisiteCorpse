@@ -89,6 +89,10 @@ module.exports = function (app) {
         example: dbExample
       });
     });
+  // Load example page and pass in an example by id
+  app.get("/editor/:id", function (req, res) {
+      var storyId;
+      res.render("editor", storyId);
   });
 
   // Render 404 page for any unmatched routes
