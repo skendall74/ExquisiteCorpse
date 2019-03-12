@@ -7,11 +7,11 @@
                             <div class="card">
                                 <div class="card-header h3 font-weight-bold">Stories</div>
                                 <div class="card-body ">
-                                    <ul class="nodots">
-                                      {{#each allStories}}
+                                    <ul id="story-ul" class="nodots">
+                                      {{!-- {{#each allStories}}
                                         {{>stories}}
                                       {{/each}}
-                                        {{!-- <li><a href="#">Story One</a></li>
+                                        <li><a href="#">Story One</a></li>
                                         <li><a href="#">It Was a Dark and Stormy Night</a></li>
                                         <li><a href="#">Social Engagement</a></li>
                                         <li><a href="#">Year End Date</a></li> --}}
@@ -26,12 +26,8 @@
                         </div>
                         <div class="col">
                             <div class="card">
-                                <div class="card-header h3 text-center font-weight-bold">
-                                    {{oneStory.story_name}}
-                                <div class="card-body h4" id="last-paragraph">
-                                    {{#each elements}}
-                                      {{>elements}}
-                                    {{/each}}
+                                <div id="currStoryName" class="card-header h3 text-center font-weight-bold"></div>
+                                <div id="currStoryElem" class="card-body h4" id="last-paragraph">
                                 </div>
                                 <div class="card-footer text-center">
                                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to the Corpse</button>
@@ -42,3 +38,38 @@
                     </div>
         </div>
     </main>
+    <script>
+        var sId = window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1);
+        displayInfo(sId);
+
+        function displayInfo(cStoryId) {
+        console.log(cStoryId);
+        var queryURL = "http://localhost:3000/api/ecorpse/" + cStoryId;
+        console.log("apicall:", queryURL);
+        // Creating an AJAX call for the specific movie button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+            console.log("Response", response);
+            for (i = 0; i < response.allStories.length; i++) {
+                var storyLi = $("<li>");
+                var aStoryLink = $("<a>");
+                    aStoryLink.attr("href","/" + response.allStories[i].id);
+                    aStoryLink.text(response.allStories[i].story_name);
+                    aStoryLink.appendTo(storyLi);
+                    storyLi.appendTo("#story-ul");
+            }
+            var curStoryName = $("<p>");
+                curStoryName.text(response.oneStory.story_name);
+                curStoryName.appendTo("#currStoryName");
+            
+            for (i = 0; i < response.elements.length; i++) {
+                var elemP = $("<p>");
+                    elemP.text(response.elements[i].body);
+                    elemP.appendTo("#currStoryElem");
+            }
+            
+        });
+      }
+    </script>
