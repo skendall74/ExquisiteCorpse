@@ -7,15 +7,7 @@
                             <div class="card">
                                 <div class="card-header h3 font-weight-bold">Stories</div>
                                 <div class="card-body ">
-                                    <ul id="story-ul" class="nodots">
-                                      {{!-- {{#each allStories}}
-                                        {{>stories}}
-                                      {{/each}}
-                                        <li><a href="#">Story One</a></li>
-                                        <li><a href="#">It Was a Dark and Stormy Night</a></li>
-                                        <li><a href="#">Social Engagement</a></li>
-                                        <li><a href="#">Year End Date</a></li> --}}
-                                    </ul>
+                                    <ul id="story-ul" class="nodots"></ul>
                                 </div>
                                 <div class="card-footer text-center">
                                     <ul class="nodots">
@@ -27,10 +19,12 @@
                         <div class="col">
                             <div class="card">
                                 <div id="currStoryName" class="card-header h3 text-center font-weight-bold"></div>
-                                <div id="currStoryElem" class="card-body h4" id="last-paragraph">
-                                </div>
+                                <div id="currStoryElem" class="card-body h4" id="last-paragraph"></div>
                                 <div class="card-footer text-center">
-                                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to the Corpse</button>
+                                    <form id="addForm" action="/editor/" method="get">
+                                        <input id="goto-editor" type="hidden" name="id"/>
+                                        <button  class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to the Corpse</button>
+                                    </form>
                                 </div>
                             </div>
 
@@ -39,23 +33,36 @@
         </div>
     </main>
     <script>
-        var sId = window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1);
-        displayInfo(sId);
+    
+    {{!-- //Pull Current StoryId from the url
+    var sId = window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1); --}}
+    var sId;
+    urlParams = getAllUrlParams(window.location.href)
+    if (urlParams.id) {
+        sId = urlParams.id
+    } else {
+        sId = 1
+    };
 
-        function displayInfo(cStoryId) {
+    console.log("urlParam", urlParams);
+    //Call Display Function to Populate Divs.
+    displayInfo(sId);
+
+    //Function to Populate Divs
+    function displayInfo(cStoryId) {
         console.log(cStoryId);
         var queryURL = "http://localhost:3000/api/ecorpse/" + cStoryId;
         console.log("apicall:", queryURL);
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
-          url: queryURL,
-          method: "GET"
+            url: queryURL,
+            method: "GET"
         }).then(function(response) {
             console.log("Response", response);
             for (i = 0; i < response.allStories.length; i++) {
                 var storyLi = $("<li>");
                 var aStoryLink = $("<a>");
-                    aStoryLink.attr("href","/" + response.allStories[i].id);
+                    aStoryLink.attr("href","/?id=" + response.allStories[i].id);
                     aStoryLink.text(response.allStories[i].story_name);
                     aStoryLink.appendTo(storyLi);
                     storyLi.appendTo("#story-ul");
@@ -63,6 +70,7 @@
             var curStoryName = $("<p>");
                 curStoryName.text(response.oneStory.story_name);
                 curStoryName.appendTo("#currStoryName");
+                $("#goto-editor").attr("value", response.oneStory.id);
             
             for (i = 0; i < response.elements.length; i++) {
                 var elemP = $("<p>");
@@ -71,5 +79,70 @@
             }
             
         });
+    }
+function getAllUrlParams(url) {
+
+  // get query string from url (optional) or window
+  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+
+  // we'll store the parameters here
+  var obj = {};
+
+  // if query string exists
+  if (queryString) {
+
+    // stuff after # is not part of query string, so get rid of it
+    queryString = queryString.split('#')[0];
+
+    // split our query string into its component parts
+    var arr = queryString.split('&');
+
+    for (var i = 0; i < arr.length; i++) {
+      // separate the keys and the values
+      var a = arr[i].split('=');
+
+      // set parameter name and value (use 'true' if empty)
+      var paramName = a[0];
+      var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+
+      // (optional) keep case consistent
+      paramName = paramName.toLowerCase();
+      if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+
+      // if the paramName ends with square brackets, e.g. colors[] or colors[2]
+      if (paramName.match(/\[(\d+)?\]$/)) {
+
+        // create key if it doesn't exist
+        var key = paramName.replace(/\[(\d+)?\]/, '');
+        if (!obj[key]) obj[key] = [];
+
+        // if it's an indexed array e.g. colors[2]
+        if (paramName.match(/\[\d+\]$/)) {
+          // get the index value and add the entry at the appropriate position
+          var index = /\[(\d+)\]/.exec(paramName)[1];
+          obj[key][index] = paramValue;
+        } else {
+          // otherwise add the value to the end of the array
+          obj[key].push(paramValue);
+        }
+      } else {
+        // we're dealing with a string
+        if (!obj[paramName]) {
+          // if it doesn't exist, create property
+          obj[paramName] = paramValue;
+        } else if (obj[paramName] && typeof obj[paramName] === 'string'){
+          // if property does exist and it's a string, convert it to an array
+          obj[paramName] = [obj[paramName]];
+          obj[paramName].push(paramValue);
+        } else {
+          // otherwise add the property
+          obj[paramName].push(paramValue);
+        }
       }
+    }
+  }
+
+  return obj;
+}
+
     </script>
