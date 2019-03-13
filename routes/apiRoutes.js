@@ -71,27 +71,53 @@ module.exports = function (app) {
       res.json(returnData);
     });
   });
-
-  // DELETE route for deleting posts inbody of editor 
-  app.delete("/api/editor", function (req, res) {
-    db.element.destroy({
+  
+  // /POST to Editor
+  app.get("/api/editor", function (req, res) {
+    db.Post.create({
       where: {
-        id: req.body.id
+        id: id,
+        story_id: id
       }
     }).then(function (dbelement) {
       res.json(dbelement);
     });
   });
 
-  // PUT route for updating body of editor
-  app.put("/api/editor", function (req, res) {
-    db.element.update(
-      req.body,
-      {
+  // DELETE route for deleting posts body of editor 
+  app.delete("/api/editor", function (req, res) {
+    db.element.destroy({
+      where: {
+        id: req.body.id,
+        story_id: req.body.story
+      }
+    }).then(function (dbelement) {
+      res.json(dbelement);
+    });
+  });
+
+  // DELETE route for deleting posts inbody of editor
+  app.delete("/api/editor", function (req, res) {
+    db.element
+      .destroy({
         where: {
           id: req.body.id
         }
-      }).then(function (dbelement) {
+      })
+      .then(function (dbelement) {
+        res.json(dbelement);
+      });
+  });
+
+  // PUT route for updating body of editor
+  app.put("/api/editor", function (req, res) {
+    db.element
+      .update(req.body, {
+        where: {
+          id: req.body.id
+        }
+      })
+      .then(function (dbelement) {
         res.json(dbelement);
       });
   });
