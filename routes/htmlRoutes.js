@@ -2,12 +2,12 @@ var db = require("../models");
 
 module.exports = function (app) {
   // Load index page
-  app.get("/:id?", function (req, res) {
+  app.get("/", function (req, res) {
     res.render("index");
   });
 
   // Load editor page
-  app.get("/editor", function (req, res) {
+  app.get("/editor/", function (req, res) {
     res.render("editor");
   });
 
