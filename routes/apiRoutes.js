@@ -37,13 +37,13 @@ const getOneStory = (tableName, id) => {
 
 module.exports = function (app) {
   // CURRENT USER Posts a Paragraph Once Varified
-  app.get("/api/ecorpse", (req, res) => {
+  app.get("/api/ecorpse/:id?", (req, res) => {
     let returnData = {};
     let id;
-    console.log(req.body.id);
+    console.log(req.params.id);
 
-    if (req.body.id) {
-      id = req.body.id;
+    if (req.params.id) {
+      id = req.params.id;
     } else {
       id = 1;
     }
