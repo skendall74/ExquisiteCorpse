@@ -79,54 +79,60 @@ module.exports = function (app) {
 
     console.log(first_name, last_name, email);
   });
-  
-  // /POST to Editor
+
+  // GET route for getting all of the posts
   app.get("/api/editor", function (req, res) {
-    db.Post.create({
-      where: {
-        id: id,
-        story_id: id
-      }
-    }).then(function (dbelement) {
-      res.json(dbelement);
+    var query = {};
+    if (req.query.user_id) {
+      query.UserId = req.query.user_id;
+    }
+    db.Elements.findAll({
+      where: query,
+      include: [db.User]
+    }).then(function (dbElements) {
+      res.json(dbElements);
     });
   });
 
-  // DELETE route for deleting posts body of editor 
-  app.delete("/api/editor", function (req, res) {
-    db.element.destroy({
+  // Get route for retrieving a single post
+  app.get("/api/editor/:id", function (req, res) {
+    db.Elements.findOne({
       where: {
-        id: req.body.id,
-        story_id: req.body.story
-      }
-    }).then(function (dbelement) {
-      res.json(dbelement);
+        body: req.params.body,
+        story: req.params.story_id
+      },
+      include: [db.User]
+    }).then(function(dbElements) {
+      res.json(dbElements);
     });
   });
 
-  // DELETE route for deleting posts inbody of editor
-  app.delete("/api/editor", function (req, res) {
-    db.element
-      .destroy({
-        where: {
-          id: req.body.id
-        }
-      })
-      .then(function (dbelement) {
-        res.json(dbelement);
-      });
+  // POST route for saving a new post in editor to db
+  app.post("/api/editor", function (req, res) {
+    db.Elements.create(req.body).then(function(dbElements) {
+      res.json(dbElements);
+    });
   });
 
-  // PUT route for updating body of editor
+  // DELETE route for deleting  users in db
+  app.delete("/api/editor/:id", function (req, res) {
+    db.Elements.destroy({
+      where: {
+        id: req.params.user_id
+      }
+    }).then(function(dbElements) {
+      res.json(dbElements);
+    });
+  });
+
+  // PUT route for updating users in db
   app.put("/api/editor", function (req, res) {
-    db.element
-      .update(req.body, {
-        where: {
-          id: req.body.id
-        }
-      })
-      .then(function (dbelement) {
-        res.json(dbelement);
-      });
+    db.Elements.update(req.body, {
+      where: {
+        id: req.body.id
+      }
+    }).then(function(dbElements) {
+      res.json(dbElements);
+    });
   });
 };
