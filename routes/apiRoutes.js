@@ -71,6 +71,14 @@ module.exports = function (app) {
       res.json(returnData);
     });
   });
+
+  app.post("/api/users", (req, res) => {
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+    let email = req.body.email;
+
+    console.log(first_name, last_name, email);
+  });
   
   // /POST to Editor
   app.get("/api/editor", function (req, res) {

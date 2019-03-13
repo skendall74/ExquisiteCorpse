@@ -62,18 +62,21 @@
         <script>
 
             function onSuccess(googleUser) {
-                //console.log('Logged in as: ' + googleUser.getBasicProfile().getName().split(' ')[0]);
-                //console.log('Email: ' + googleUser.getBasicProfile().getEmail());
+                console.log('Logged in as: ' + googleUser.getBasicProfile().getName().split(' ')[0]);
+                console.log('Email: ' + googleUser.getBasicProfile().getEmail());
                 user = {
                     first_name: googleUser.getBasicProfile().getName().split(' ')[0],
                     last_name: googleUser.getBasicProfile().getName().split(' ')[1],
                     email: googleUser.getBasicProfile().getEmail()
                 };
-                
-                $.post("/api/users", user, function () {
+                console.log(user);
 
+                $.post("/api/users", user, function () {
+                    console.log(user);
                 });
+
                 $("#sign-out").show();
+                $("#my-signin2").text(`${user.first_name} ${user.last_name}`);
             }
             function onFailure(error) {
                 console.log(error);
@@ -93,7 +96,9 @@
                 auth2.signOut().then(function () {
                     console.log('User signed out.');
                 });
+
                 $("#sign-out").hide();
+                $("#my-signin2").text(renderButton);
             }
         </script>
 
