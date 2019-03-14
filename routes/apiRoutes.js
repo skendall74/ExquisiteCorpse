@@ -35,6 +35,14 @@ const getOneStory = (tableName, id) => {
   })
 };
 
+const createNew = (tableName, newItem) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].create(newItem).then((result) => {
+      resolve(result);
+    })
+  })
+}
+
 const userVerification = (tableName, email) => {
   return new Promise((resolve, reject) => {
     db[tableName].count({
@@ -85,18 +93,24 @@ module.exports = function (app) {
   });
 
   app.post("/api/users", (req, res) => {
-    let first_name = req.body.first_name;
-    let last_name = req.body.last_name;
-    let email = req.body.email;
+    let user = {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email
+    }
     let userResult;
 
     Promise.all([
-      userVerification("user", email)
+      userVerification("user", user.email)
     ]).then((data) => {
       userResult = data[0];
 
       if (userResult === 0) {
-        console.log("Insert into new table");
+        Promise.all([
+          createNew("user", user)
+        ]).then((data) => {
+          res.json(data);
+        })
       } else if (userResult === 1) {
         console.log("Do nothing")
       } else {
@@ -135,10 +149,15 @@ module.exports = function (app) {
 
   // POST route for saving a new post in editor to db
   app.post("/api/editor", function (req, res) {
-    db.element.create(req.body).then(function (dbElements) {
-      console.log(req.body)
-      res.json(dbElements);
-    });
+    Promise.all([
+      createNew("element", req.body)
+    ]).then((result) => {
+      res.json(result);
+    })
+    // db.element.create(req.body).then(function (dbElements) {
+    //   console.log(req.body)
+    //   res.json(dbElements);
+    // });
   });
 
   // DELETE route for deleting  users in db
