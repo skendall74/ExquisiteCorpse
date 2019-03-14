@@ -35,6 +35,18 @@ const getOneStory = (tableName, id) => {
   })
 };
 
+const userVerification = (tableName, email) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].count({
+      where: {
+        email: email
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+}
+
 module.exports = function (app) {
   // CURRENT USER Posts a Paragraph Once Varified
   app.get("/api/ecorpse/:id?", (req, res) => {
@@ -76,8 +88,22 @@ module.exports = function (app) {
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
     let email = req.body.email;
+    let userResult;
 
-    console.log(first_name, last_name, email);
+    Promise.all([
+      userVerification("user", email)
+    ]).then((data) => {
+      userResult = data[0];
+
+      if (userResult === 0) {
+        console.log("Insert into new table");
+      } else if (userResult === 1) {
+        console.log("Do nothing")
+      } else {
+        console.log("Console duplicates")
+      }
+    });
+
   });
 
   // GET route for getting all of the posts
