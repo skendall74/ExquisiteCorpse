@@ -35,6 +35,26 @@ const getOneStory = (tableName, id) => {
   })
 };
 
+const createNew = (tableName, newItem) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].create(newItem).then((result) => {
+      resolve(result);
+    })
+  })
+}
+
+const userVerification = (tableName, email) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].count({
+      where: {
+        email: email
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+}
+
 module.exports = function (app) {
   // CURRENT USER Posts a Paragraph Once Varified
   app.get("/api/ecorpse/:id?", (req, res) => {
@@ -73,11 +93,31 @@ module.exports = function (app) {
   });
 
   app.post("/api/users", (req, res) => {
-    let first_name = req.body.first_name;
-    let last_name = req.body.last_name;
-    let email = req.body.email;
+    let user = {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email
+    }
+    let userResult;
 
-    console.log(first_name, last_name, email);
+    Promise.all([
+      userVerification("user", user.email)
+    ]).then((data) => {
+      userResult = data[0];
+
+      if (userResult === 0) {
+        Promise.all([
+          createNew("user", user)
+        ]).then((data) => {
+          res.json(data);
+        })
+      } else if (userResult === 1) {
+        console.log("Do nothing")
+      } else {
+        console.log("Console duplicates")
+      }
+    });
+
   });
 
   // GET route for getting all of the posts
@@ -109,10 +149,15 @@ module.exports = function (app) {
 
   // POST route for saving a new post in editor to db
   app.post("/api/editor", function (req, res) {
-    db.element.create(req.body).then(function (dbElements) {
-      console.log(req.body)
-      res.json(dbElements);
-    });
+    Promise.all([
+      createNew("element", req.body)
+    ]).then((result) => {
+      res.json(result);
+    })
+    // db.element.create(req.body).then(function (dbElements) {
+    //   console.log(req.body)
+    //   res.json(dbElements);
+    // });
   });
 
   // DELETE route for deleting  users in db
