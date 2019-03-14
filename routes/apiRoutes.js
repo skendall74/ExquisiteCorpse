@@ -109,7 +109,8 @@ module.exports = function (app) {
 
   // POST route for saving a new post in editor to db
   app.post("/api/editor", function (req, res) {
-    db.Elements.create(req.body).then(function(dbElements) {
+    db.element.create(req.body).then(function (dbElements) {
+      console.log(req.body)
       res.json(dbElements);
     });
   });
