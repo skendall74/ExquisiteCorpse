@@ -60,7 +60,7 @@ module.exports = function (app) {
   app.get("/api/ecorpse/:id?", (req, res) => {
     let returnData = {};
     let id;
-    console.log(req.params.id);
+    // console.log(req.params.id);
 
     if (req.params.id) {
       id = req.params.id;
@@ -87,7 +87,7 @@ module.exports = function (app) {
         elements: dataArray[2],
       }
 
-      console.log(returnData);
+      // console.log(returnData);
       res.json(returnData);
     });
   });
@@ -114,7 +114,7 @@ module.exports = function (app) {
       } else if (userResult === 1) {
         console.log("Do nothing")
       } else {
-        console.log("Console duplicates")
+        // console.log("Console duplicates")
       }
     });
 
@@ -147,13 +147,11 @@ module.exports = function (app) {
     });
   });
 
-  // POST route for saving a new post in editor to db
+  //POST route for saving a new post in editor to db
   app.post("/api/editor", function (req, res) {
-    Promise.all([
-      createNew("element", req.body)
-    ]).then((result) => {
-      res.json(result);
-    })
+    console.log(req.body);
+    response = { one:"two" };
+    res.json(response);
     // db.element.create(req.body).then(function (dbElements) {
     //   console.log(req.body)
     //   res.json(dbElements);

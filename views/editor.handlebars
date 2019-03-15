@@ -1,5 +1,6 @@
 <main role="main">
     <div class="container">
+      <form action="/api/editor/" method="post">
         <div id="ec-main" class="row">
             <div class="col-12">
                 <div id="info-card" class="card">
@@ -10,15 +11,17 @@
                 <div id="editor-card" class="card">
                     <div class="card-header text-center h3">Editor</div>
                     <div class="card-body">
-                        <div id="full-toolbar"></div>
-                        <div id="full-editor" style="height: 25%"></div>
-                        {{!-- <div id="editor"></div> --}}
+                        <div class="form-group">
+                          <label for="comment">Continue the Story:</label>
+                          <textarea class="form-control" rows="5" name="element-body" id="body"></textarea>
+                        </div>
                     </div>
                     <div class="card-footer text-center">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to Corpse</button>
                     </div>
                 </div>
             </div>
+          </form>
         </div>
     </main>
     <script type="text/javascript">
@@ -36,96 +39,15 @@
     } else {
         nS = false;
     };
-
-    
-    
-    
-    mockResponse = { 
-    oneStory: 
-    { id: 1,
-                story_name: 'Main Story',
-                createdAt: '9999-12-31T23:59:59.000Z',
-                updatedAt: '9999-12-31T23:59:59.000Z' },
-    allStories:
-    [ { id: 1,
-                story_name: 'Main Story',
-                createdAt: '9999-12-31T23:59:59.000Z',
-                updatedAt: '9999-12-31T23:59:59.000Z' },
-    { id: 2,
-                story_name: 'Story Two',
-                createdAt: '9999-12-31T23:59:59.000Z',
-                updatedAt: '9999-12-31T23:59:59.000Z' } ],
-    elements:
-   [ { id: 1,
-       body:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin ac. Semper auctor neque vitae tempus. Risus ultricies tristique nulla aliquet enim tortor at. Bibendum arcu vitae elementum curabitur vitae nunc sed velit. Senectus et netus et malesuada fames.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 },
-     { id: 2,
-       body:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin ac. Semper auctor neque vitae tempus. Risus ultricies tristique nulla aliquet enim tortor at. Bibendum arcu vitae elementum curabitur vitae nunc sed velit. Senectus et netus et malesuada fames.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 },
-     { id: 3,
-       body:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin ac. Semper auctor neque vitae tempus. Risus ultricies tristique nulla aliquet enim tortor at. Bibendum arcu vitae elementum curabitur vitae nunc sed velit. Senectus et netus et malesuada fames.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 },
-     { id: 4,
-       body:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin ac. Semper auctor neque vitae tempus. Risus ultricies tristique nulla aliquet enim tortor at. Bibendum arcu vitae elementum curabitur vitae nunc sed velit. Senectus et netus et malesuada fames.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 },
-     { id: 5,
-       body:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin ac. Semper auctor neque vitae tempus. Risus ultricies tristique nulla aliquet enim tortor at. Bibendum arcu vitae elementum curabitur vitae nunc sed velit. Senectus et netus et malesuada fames.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 },
-     { id: 6,
-       body:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida in fermentum et sollicitudin ac. Semper auctor neque vitae tempus. Risus ultricies tristique nulla aliquet enim tortor at. Bibendum arcu vitae elementum curabitur vitae nunc sed velit. Senectus et netus et malesuada fames.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 },
-     { id: 7,
-       body:
-        'In hac habitasse platea dictumst. Quisque tempor magna vitae justo semper molestie. Cras tincidunt augue nec lectus finibus, sollicitudin luctus neque sagittis. Cras fringilla magna id nisl fringilla venenatis. Ut condimentum nulla in tellus vehicula vehicula. Phasellus condimentum maximus aliquam. Vivamus gravida turpis ligula, vel tristique odio lobortis ut. Curabitur est turpis, efficitur et gravida eget, consequat nec massa. Maecenas quam dui, mattis sit amet neque quis, consectetur feugiat massa.',
-       createdAt: '9999-12-31T23:59:59.000Z',
-       updatedAt: '9999-12-31T23:59:59.000Z',
-       user_id: 2,
-       story_id: 1 } ] 
-    }
     
     displayLastInfoCard(sId, nS);
-    var toolbarOptions = [
-            ['bold', 'italic']
-        ];
-    var fullEditor = new Quill('#full-editor', {
-        modules: {
-            // 'authorship': { authorId: 'galadriel', enabled: true },
-            // 'multi-cursor': true,
-            // 'toolbar': { container: '#full-toolbar' }
-            //     'link-tooltip': true
-        },
-        theme: 'snow'
-    });
 
-    function logHtmlContent() {
-        console.log(fullEditor.root.innerHTML);
-    }
 
-    function displayLastInfoCard(curStoryId, newStory) {
+function logHtmlContent() {
+    console.log(fullEditor.root.innerHTML);
+}
+
+function displayLastInfoCard(curStoryId, newStory) {
       var queryURL = "http://localhost:3000/api/ecorpse/" + curStoryId;
       // Creating an AJAX call for the specific movie button being clicked
       $.ajax({
@@ -143,6 +65,7 @@
               storyNameInput.addClass("form-control text-center");
               storyNameInput.attr("type","text");
               storyNameInput.attr("id","new-story-name");
+              storyNameInput.attr("name","newstoryname");
               storyNameInput.attr("placeholder","New Story Name");
           storyNameInput.appendTo(storyNameInputRow);
           storyNameInputRow.appendTo(storyName);
