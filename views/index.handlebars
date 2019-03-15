@@ -6,12 +6,16 @@
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-header h3 font-weight-bold">Stories</div>
-                                <div class="card-body ">
+                                <div class="card-body">
                                     <ul id="story-ul" class="nodots"></ul>
                                 </div>
                                 <div class="card-footer text-center">
                                     <ul class="nodots">
-                                    <li><button class="btn btn-outline-success my-2 my-sm-0" type="submit">New Story</button></li>
+                                        <form id="addForm" action="/editor/" method="get">
+                                            {{!-- <input id="goto-editor" type="hidden" name="id"/> --}}
+                                            <input id="new-story" type="hidden" name="newStory" value="yes"/>
+                                            <li><button class="btn btn-outline-success my-2 my-sm-0" type="submit">New Story</button></li>
+                                        </form>
                                     </ul>
                                 </div>
                             </div>
@@ -22,7 +26,7 @@
                                 <div id="currStoryElem" class="card-body h4" id="last-paragraph"></div>
                                 <div class="card-footer text-center">
                                     <form id="addForm" action="/editor/" method="get">
-                                        <input id="goto-editor" type="hidden" name="id"/>
+                                        <input id="goto-editor" type="hidden" name="id" value="1"/>
                                         <button  class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to the Corpse</button>
                                     </form>
                                 </div>
@@ -31,11 +35,8 @@
                         </div>
                     </div>
         </div>
-    </main>
-    <script>
-    
-    {{!-- //Pull Current StoryId from the url
-    var sId = window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1); --}}
+</main>
+<script>
     var sId;
     urlParams = getAllUrlParams(window.location.href)
     if (urlParams.id) {
@@ -48,8 +49,10 @@
     //Call Display Function to Populate Divs.
     displayInfo(sId);
 
-    //Function to Populate Divs
-    function displayInfo(cStoryId) {
+    
+
+//Function to Populate Divs
+function displayInfo(cStoryId) {
         console.log(cStoryId);
         var queryURL = "http://localhost:3000/api/ecorpse/" + cStoryId;
         console.log("apicall:", queryURL);
@@ -144,5 +147,4 @@ function getAllUrlParams(url) {
 
   return obj;
 }
-
-    </script>
+</script>
