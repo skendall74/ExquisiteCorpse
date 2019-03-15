@@ -1,6 +1,7 @@
 <main role="main">
     <div class="container">
       <form action="/api/editor/" method="post">
+      <input type="hidden" name="email" value="mat@tenfathomsdeep.com">
         <div id="ec-main" class="row">
             <div class="col-12">
                 <div id="info-card" class="card">
@@ -13,7 +14,7 @@
                     <div class="card-body">
                         <div class="form-group">
                           <label for="comment">Continue the Story:</label>
-                          <textarea class="form-control" rows="5" name="element-body" id="body"></textarea>
+                          <textarea class="form-control" rows="5" name="body" id="body"></textarea>
                         </div>
                     </div>
                     <div class="card-footer text-center">
@@ -65,7 +66,7 @@ function displayLastInfoCard(curStoryId, newStory) {
               storyNameInput.addClass("form-control text-center");
               storyNameInput.attr("type","text");
               storyNameInput.attr("id","new-story-name");
-              storyNameInput.attr("name","newstoryname");
+              storyNameInput.attr("name","story_name");
               storyNameInput.attr("placeholder","New Story Name");
           storyNameInput.appendTo(storyNameInputRow);
           storyNameInputRow.appendTo(storyName);
@@ -88,6 +89,11 @@ function displayLastInfoCard(curStoryId, newStory) {
             elemP.appendTo(lastElem);
             };
             lastElem.appendTo("#info-card");
+        var storyIdInput = $("<input>");
+            storyIdInput.attr("type","hidden");
+            storyIdInput.attr("name","story_id");
+            storyIdInput.attr("value",curStoryId);
+            storyIdInput.appendTo("#info-card");
         }
       });
     }
