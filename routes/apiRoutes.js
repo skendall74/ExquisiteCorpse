@@ -35,6 +35,18 @@ const getOneStory = (tableName, id) => {
   })
 };
 
+const getUser = (tableName, email) => {
+  return new Promise((resolve, reject) => {
+    db[tableName].findOne({
+      where: {
+        email: email
+      }
+    }).then((result) => {
+      resolve(result);
+    })
+  })
+}
+
 const createNew = (tableName, newItem) => {
   return new Promise((resolve, reject) => {
     db[tableName].create(newItem).then((result) => {
@@ -60,7 +72,7 @@ module.exports = function (app) {
   app.get("/api/ecorpse/:id?", (req, res) => {
     let returnData = {};
     let id;
-    // console.log(req.params.id);
+    console.log(req.params.id);
 
     if (req.params.id) {
       id = req.params.id;
@@ -87,7 +99,7 @@ module.exports = function (app) {
         elements: dataArray[2],
       }
 
-      // console.log(returnData);
+      console.log(returnData);
       res.json(returnData);
     });
   });
@@ -114,48 +126,56 @@ module.exports = function (app) {
       } else if (userResult === 1) {
         console.log("Do nothing")
       } else {
-        // console.log("Console duplicates")
+        console.log("Console duplicates")
       }
     });
 
   });
 
-  // GET route for getting all of the posts
-  app.get("/api/editor", function (req, res) {
-    var query = {};
-    if (req.query.user_id) {
-      query.UserId = req.query.user_id;
-    }
-    db.Elements.findAll({
-      where: query,
-      include: [db.User]
-    }).then(function (dbElements) {
-      res.json(dbElements);
-    });
-  });
-
-  // Get route for retrieving a single post
-  app.get("/api/editor/:id", function (req, res) {
-    db.Elements.findOne({
-      where: {
-        body: req.params.body,
-        story: req.params.story_id
-      },
-      include: [db.User]
-    }).then(function(dbElements) {
-      res.json(dbElements);
-    });
-  });
-
-  //POST route for saving a new post in editor to db
+  // POST route for saving a new post in editor to db
   app.post("/api/editor", function (req, res) {
-    console.log(req.body);
-    response = { one:"two" };
-    res.json(response);
-    // db.element.create(req.body).then(function (dbElements) {
-    //   console.log(req.body)
-    //   res.json(dbElements);
-    // });
+    let user_id;
+
+    Promise.all([
+      getUser("user", req.body.email)
+    ]).then((result) => {
+      user_id = (JSON.parse(JSON.stringify(result)))[0].id;
+
+      if (req.body.story_name) {
+        newStory = {
+          story_name: req.body.story_name
+        }
+        Promise.all([
+          createNew("stories", newStory)
+        ]).then((result) => {
+          let story_id = (JSON.parse(JSON.stringify(result)))[0].id;
+
+          newElement = {
+            body: req.body.body,
+            story_id: story_id,
+            user_id: user_id
+          }
+
+          Promise.all([
+            createNew("element", newElement)
+          ]).then((result) => {
+            res.json(result);
+          });
+        })
+      } else {
+        newElement = {
+          body: req.body.body,
+          story_id: req.body.story_id,
+          user_id: user_id
+        }
+
+        Promise.all([
+          createNew("element", newElement)
+        ]).then((result) => {
+          res.json(result);
+        });
+      }
+    });
   });
 
   // DELETE route for deleting  users in db
@@ -164,7 +184,7 @@ module.exports = function (app) {
       where: {
         id: req.params.user_id
       }
-    }).then(function(dbElements) {
+    }).then(function (dbElements) {
       res.json(dbElements);
     });
   });
@@ -175,7 +195,7 @@ module.exports = function (app) {
       where: {
         id: req.body.id
       }
-    }).then(function(dbElements) {
+    }).then(function (dbElements) {
       res.json(dbElements);
     });
   });

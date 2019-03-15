@@ -6,10 +6,6 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 len: [1, 1000]
             }
-        },
-        commit: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: true
         }
         // id | Sequelize will populate this
         // Created_at | Sequelize will populate this
