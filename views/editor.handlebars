@@ -32,12 +32,6 @@
       let email = $("#my-signin2").val();
       $("#emailValue").val(email);
     }, 1000);
-
-    $("#submitButton").on("click", function() {
-      $.get("/", function() {
-
-      })
-    })
     urlParams = getAllUrlParams(window.location.href)
     console.log("urlParams",urlParams);
     if (urlParams.id) {
