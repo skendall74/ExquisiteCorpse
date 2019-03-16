@@ -159,7 +159,7 @@ module.exports = function (app) {
           Promise.all([
             createNew("element", newElement)
           ]).then((result) => {
-            res.json(result);
+            res.render("index");
           });
         })
       } else {
@@ -172,7 +172,7 @@ module.exports = function (app) {
         Promise.all([
           createNew("element", newElement)
         ]).then((result) => {
-          res.json(result);
+          res.render("index");
         });
       }
     });

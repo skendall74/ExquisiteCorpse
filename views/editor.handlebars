@@ -1,7 +1,7 @@
 <main role="main">
     <div class="container">
       <form action="/api/editor/" method="post">
-      <input type="hidden" name="email" value="mat@tenfathomsdeep.com">
+      <input type="hidden" name="email" id="emailValue">
         <div id="ec-main" class="row">
             <div class="col-12">
                 <div id="info-card" class="card">
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to Corpse</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="submitButton">Add to Corpse</button>
                     </div>
                 </div>
             </div>
@@ -28,6 +28,16 @@
     <script type="text/javascript">
     var sId;
     var nS;
+    setTimeout(function() {
+      let email = $("#my-signin2").val();
+      $("#emailValue").val(email);
+    }, 1000);
+
+    $("#submitButton").on("click", function() {
+      $.get("/", function() {
+
+      })
+    })
     urlParams = getAllUrlParams(window.location.href)
     console.log("urlParams",urlParams);
     if (urlParams.id) {
