@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      {{!-- <div class="jumbotron mt-4 text-center"> --}}
+        <div class=card>
+          <div class="card-header text-center">
+            <h1 class="display-4 ">Please Login with Google</h1>
+          </div>
+          <div class="card-body text-center">
+            <form class="form-inline mt-2 mt-md-0">
+              <button style="width: 100%" class="btn btn-outline-success my-2 my-sm-0" id="my-signin2" type="submit"></button></p>
+            </form>
+          </div>
+    </div>
+  </div>
+  
+<script>
+
+            function onSuccess(googleUser) {
+                console.log('Logged in as: ' + googleUser.getBasicProfile().getName().split(' ')[0]);
+                console.log('Email: ' + googleUser.getBasicProfile().getEmail());
+                user = {
+                    first_name: googleUser.getBasicProfile().getName().split(' ')[0],
+                    last_name: googleUser.getBasicProfile().getName().split(' ')[1],
+                    email: googleUser.getBasicProfile().getEmail()
+                };
+                console.log(user);
+
+                $.post("/api/users", user, function () {
+                    console.log(user);
+                });
+                window.location.href = "http://www.w3schools.com";
+                $("#sign-out").show();
+                $("#my-signin2").text(`${user.first_name} ${user.last_name}`);
+                
+            }
+            function onFailure(error) {
+                console.log(error);
+            }
+            function renderButton() {
+                gapi.signin2.render('my-signin2', {
+                    'scope': 'profile email',
+                    'longtitle': true,
+                    'theme': 'dark',
+                    'onsuccess': onSuccess,
+                    'onfailure': onFailure
+                });
+                $("#sign-out").hide();
+            }
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
+
+                $("#sign-out").hide();
+                $("#my-signin2").text(renderButton);
+            }
+        </script>
+
+        <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
