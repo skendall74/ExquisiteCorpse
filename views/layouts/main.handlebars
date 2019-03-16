@@ -76,7 +76,8 @@
                 });
 
                 $("#sign-out").show();
-                $("#my-signin2").text(`${user.first_name} ${user.last_name}`);
+                $("#my-signin2").hide();
+                $("#my-signin2").val(user.email);
             }
             function onFailure(error) {
                 console.log(error);
@@ -90,15 +91,15 @@
                     'onfailure': onFailure
                 });
                 $("#sign-out").hide();
+                $("#my-signin2").show();
             }
             function signOut() {
                 var auth2 = gapi.auth2.getAuthInstance();
                 auth2.signOut().then(function () {
                     console.log('User signed out.');
+                    $("#sign-out").hide();
+                    $("#my-signin2").text(renderButton);
                 });
-
-                $("#sign-out").hide();
-                $("#my-signin2").text(renderButton);
             }
         </script>
 
