@@ -55,7 +55,7 @@
 //Function to Populate Divs
 function displayInfo(cStoryId) {
         console.log(cStoryId);
-        var queryURL = "http://localhost:3000/api/ecorpse/" + cStoryId;
+        var queryURL = "/api/ecorpse/" + cStoryId;
         console.log("apicall:", queryURL);
         // Creating an AJAX call for the specific movie button being clicked
         $.ajax({
