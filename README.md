@@ -6,7 +6,7 @@ The application uses HTML/CSS/Javascript/Bootstrap on the front end and Node/Exp
 
 ## Links
 * [Live Heroku Site](https://ecorpse.herokuapp.com/ "Live Heroku Site")
-* [GitHub for application](https://github.com/zachmartin9/Project2_eCorpse "GitHub for application")
+* [GitHub for application](https://github.com/matking4509/Project2_eCorpse "GitHub for application")
 
 ## Technologies Used
 - [x] HTML5/CSS3/Bootstrap/Handlebars/API
@@ -27,3 +27,8 @@ The application uses HTML/CSS/Javascript/Bootstrap on the front end and Node/Exp
     * The `api/editor` API allows the user to either create a new story or add on to an existing story. When the API is called, it first takes the user's email and returns that user's associated user_id. This user_id is then associated to that users new story commit or their new commit to an existing story.
     
 4. The application uses `.env` to store the database passwords adding a layer of security to the application. Preventing unwanted outside tampering to the application.
+
+*![Main Page](https://raw.githubusercontent.com/matking4509/Project2_eCorpse/master/wireframe/img/main.png "Main Page")
+*![Side Bar Page](https://raw.githubusercontent.com/matking4509/Project2_eCorpse/master/wireframe/img/sidebar.png "Side Bar Page")
+*![Editor Page](https://raw.githubusercontent.com/matking4509/Project2_eCorpse/master/wireframe/img/editor.png "Editor Page")
+*![About Page](https://raw.githubusercontent.com/matking4509/Project2_eCorpse/master/wireframe/img/about.png "About Page")
